@@ -15,6 +15,7 @@ function Speed($user, $pasw)
     }
 
     $data = mysqli_fetch_assoc($resultado);
+    echo
     $hash = $data['hash'] ?? null;
 
     if (!$hash) {
@@ -88,7 +89,7 @@ function Speed($user, $pasw)
                     $direccion = $evento->max_speed_address->v;
                     $start_time = $evento->start_time->v;
 
-                    if (str_contains($direccion, 'RUTA')) {
+                    if (str_contains($direccion, 'Antofagasta Ruta B-400,RUTA B400')) {
                         $duration = $evento->duration->v;
                         $max_speed = $evento->max_speed->v;
                         $lat = $evento->max_speed_address->location->lat;
@@ -97,13 +98,13 @@ function Speed($user, $pasw)
                         $qry = "INSERT INTO `masgps`.`tandemOver80km` 
                             (`contrato`, `id_tracker`, `patente`, `fecha`, `start_time`, `duration`, `max_speed`, `lat`, `lng`, `direccion`) 
                             VALUES ('$user', '$id_tracker', '$pat', '$ayer', '$start_time', '$duration', '$max_speed', '$lat', '$lng', '$direccion')";
-                            
+                            echo $direccion;
 
                          if (!mysqli_query($mysqli, $qry)) {
                              echo "Error al insertar datos: " . mysqli_error($mysqli);
                          }
                     } else {
-                        echo "$ayer : $start_time Sin datos de velocidad mayor a 80km con duración de más de 1 minuto en GeoZonas para la patente : $pat<br>";
+                         "$ayer : $start_time Sin datos de velocidad mayor a 80km con duración de más de 1 minuto en GeoZonas para la patente : $pat - $direccion <br>";
                     }
                 }
             }
